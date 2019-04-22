@@ -1,6 +1,5 @@
 package com.company.Display;
 
-import com.company.DataStorage.PokeAPIConnection;
 import com.company.DataStorage.PokemonData;
 
 import javax.imageio.ImageIO;
@@ -26,44 +25,57 @@ public class PokemonDataPanel extends JPanel {
 
     private PokemonData pokeData;
 
-    //Default constructor
+    //Constructor
     public PokemonDataPanel() {
-        font = new Font("Times New Roman", Font.PLAIN, 24);
-
-        setDefaultLabels();
-        createUI();
+        initLabels();
+        displayUI();
 
         setBackground(new Color(250, 70, 70));
     }
 
-    private void setDefaultLabels() {
-        name = new JLabel("Name");
+    //Initialize jlabels and set font
+    private void initLabels() {
+        font = new Font("Times New Roman", Font.PLAIN, 24);
+
+        name = new JLabel();
         name.setFont(new Font("Times New Roman", Font.BOLD, 30));
 
-        num = new JLabel("ID");
+        num = new JLabel();
         num.setFont(font);
 
-        type = new JLabel("Type");
+        type = new JLabel();
         type.setFont(font);
 
-        height = new JLabel("Height");
+        height = new JLabel();
         height.setFont(font);
 
-        weight = new JLabel("Weight");
+        weight = new JLabel();
         weight.setFont(font);
 
-        ability = new JLabel("Ability");
+        ability = new JLabel();
         ability.setFont(font);
 
-        weakness = new JLabel("Weakness");
+        weakness = new JLabel();
         weakness.setFont(font);
 
         image = new JLabel();
+    }
+
+    //Set inital default jlabel texts
+    public void setDefaultLabels() {
+        name.setText("MissingNo.");
+        num.setText("#???");
+        type.setText("Type: ???");
+        height.setText("Height: ???");
+        weight.setText("Weight: ???");
+        ability.setText("Ability: ???");
+        weakness.setText("Weakness: ???");
 
         try {
             URL url = new URL("https://vignette.wikia.nocookie.net/pokemon/images/d/d3/Missingno.jpg/revision/latest?cb=20070813234243");
 
             Image img = ImageIO.read(url);
+            img = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
             image.setIcon(new ImageIcon(img));
         } catch(MalformedURLException e) {
             e.printStackTrace();
@@ -72,40 +84,42 @@ public class PokemonDataPanel extends JPanel {
         }
     }
 
-    public void setPokemonData(String pokemon) {
-        clearDisplay();
-
+    public void displayPokemonData(String pokemon) {
         pokeData = new PokemonData(pokemon);
 
+        //Set new labels to pokemon data
         name.setText(pokeData.getName());
-        num.setText(String.valueOf(pokeData.getNum()));
-        type.setText(pokeData.getType());
-        height.setText(pokeData.getHeight());
-        weight.setText(pokeData.getWeight());
-        ability.setText(pokeData.getAbility());
-        weakness.setText(pokeData.getWeakness());
+        num.setText("#" + pokeData.getNum());
+        type.setText("Type: " + pokeData.getType());
+        height.setText("Height: " + pokeData.getHeight());
+        weight.setText("Weight: " + pokeData.getWeight());
+        ability.setText("Ability: " + pokeData.getAbility());
+        weakness.setText("Weakness: " + pokeData.getWeakness());
 
+        //Add pokemon image
         try {
             URL url = new URL(pokeData.getImage());
 
             Image img = ImageIO.read(url);
+            img = img.getScaledInstance(300, 300, Image.SCALE_DEFAULT);
             image.setIcon(new ImageIcon(img));
-        } catch(MalformedURLException e) {
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             System.err.println("Caught error: " + ex);
         }
-
-        createUI();
     }
 
-    private void createUI() {
+    //Initialize and set panels
+    private void displayUI() {
+        //Image panel attributes
         imagePanel = new JPanel();
         imagePanel.setBackground(new Color(250, 70, 70));
         imagePanel.setPreferredSize(new Dimension(300, 250));
         imagePanel.add(image);
         add(imagePanel, BorderLayout.WEST);
 
+        //Data panel attributes
         dataPanel = new JPanel(new GridLayout(4, 2, 5, 5));
         dataPanel.setPreferredSize(new Dimension(500, 400));
         dataPanel.setBackground(new Color(250, 70, 70));
@@ -116,19 +130,5 @@ public class PokemonDataPanel extends JPanel {
         dataPanel.add(ability);
         dataPanel.add(weakness);
         add(dataPanel, BorderLayout.EAST);
-    }
-
-    private void clearDisplay() {
-        name.setText("");
-        num.setText("");
-        type.setText("");
-        height.setText("");
-        weight.setText("");
-        ability.setText("");
-        weakness.setText("");
-        image.removeAll();
-
-        validate();
-        repaint();
     }
 }
