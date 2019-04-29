@@ -1,3 +1,6 @@
+# Test
+Test
+
 # Pokedex-API
 This is a full stack Pokedex application that displays a search bar and profile for the current Pokemon.
 
