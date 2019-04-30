@@ -12,11 +12,10 @@ public class PokemonDataPanel extends JPanel {
     //Pokemon data labels
     private JLabel name;
     private JLabel num;
-    private JLabel type;
+    private JLabel types;
     private JLabel height;
     private JLabel weight;
-    private JLabel ability;
-    private JLabel weakness;
+    private JLabel abilities;
     private JLabel image;
     private JPanel imagePanel;
     private JPanel dataPanel;
@@ -33,7 +32,7 @@ public class PokemonDataPanel extends JPanel {
         setBackground(new Color(250, 70, 70));
     }
 
-    //Initialize jlabels and set font
+    //Initialize labels and set font
     private void initLabels() {
         font = new Font("Times New Roman", Font.PLAIN, 24);
 
@@ -43,8 +42,8 @@ public class PokemonDataPanel extends JPanel {
         num = new JLabel();
         num.setFont(font);
 
-        type = new JLabel();
-        type.setFont(font);
+        types = new JLabel();
+        types.setFont(font);
 
         height = new JLabel();
         height.setFont(font);
@@ -52,11 +51,8 @@ public class PokemonDataPanel extends JPanel {
         weight = new JLabel();
         weight.setFont(font);
 
-        ability = new JLabel();
-        ability.setFont(font);
-
-        weakness = new JLabel();
-        weakness.setFont(font);
+        abilities = new JLabel();
+        abilities.setFont(font);
 
         image = new JLabel();
     }
@@ -65,17 +61,16 @@ public class PokemonDataPanel extends JPanel {
     public void setDefaultLabels() {
         name.setText("MissingNo.");
         num.setText("#???");
-        type.setText("Type: ???");
+        types.setText("Type: ???");
         height.setText("Height: ???");
         weight.setText("Weight: ???");
-        ability.setText("Ability: ???");
-        weakness.setText("Weakness: ???");
+        abilities.setText("Abilities: ???");
 
         try {
             URL url = new URL("https://vignette.wikia.nocookie.net/pokemon/images/d/d3/Missingno.jpg/revision/latest?cb=20070813234243");
 
             Image img = ImageIO.read(url);
-            img = img.getScaledInstance(200, 200, Image.SCALE_DEFAULT);
+            img = img.getScaledInstance(300, 300, Image.SCALE_DEFAULT);
             image.setIcon(new ImageIcon(img));
         } catch(MalformedURLException e) {
             e.printStackTrace();
@@ -88,20 +83,19 @@ public class PokemonDataPanel extends JPanel {
         pokeData = new PokemonData(pokemon);
 
         //Set new labels to pokemon data
-        name.setText(pokeData.getName());
+        name.setText(pokeData.getName().substring(0, 1).toUpperCase() + pokeData.getName().substring(1));
         num.setText("#" + pokeData.getNum());
-        type.setText("Type: " + pokeData.getType());
+        types.setText("<html>Type: " + pokeData.getTypes() + "</html>");
         height.setText("Height: " + pokeData.getHeight());
         weight.setText("Weight: " + pokeData.getWeight());
-        ability.setText("Ability: " + pokeData.getAbility());
-        weakness.setText("Weakness: " + pokeData.getWeakness());
+        abilities.setText("<html>Abilities: " + pokeData.getAbilities() + "</html>");
 
         //Add pokemon image
         try {
             URL url = new URL(pokeData.getImage());
 
             Image img = ImageIO.read(url);
-            img = img.getScaledInstance(300, 300, Image.SCALE_DEFAULT);
+            img = img.getScaledInstance(400, 400, Image.SCALE_DEFAULT);
             image.setIcon(new ImageIcon(img));
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -115,7 +109,7 @@ public class PokemonDataPanel extends JPanel {
         //Image panel attributes
         imagePanel = new JPanel();
         imagePanel.setBackground(new Color(250, 70, 70));
-        imagePanel.setPreferredSize(new Dimension(300, 250));
+        imagePanel.setPreferredSize(new Dimension(400, 400));
         imagePanel.add(image);
         add(imagePanel, BorderLayout.WEST);
 
@@ -125,10 +119,10 @@ public class PokemonDataPanel extends JPanel {
         dataPanel.setBackground(new Color(250, 70, 70));
         dataPanel.add(name);
         dataPanel.add(num);
+        dataPanel.add(types);
         dataPanel.add(height);
         dataPanel.add(weight);
-        dataPanel.add(ability);
-        dataPanel.add(weakness);
+        dataPanel.add(abilities);
         add(dataPanel, BorderLayout.EAST);
     }
 }

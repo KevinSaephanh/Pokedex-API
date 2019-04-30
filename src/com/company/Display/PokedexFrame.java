@@ -53,7 +53,7 @@ public class PokedexFrame extends JFrame {
         //Create and resize title image
         titleIcon = new ImageIcon("images\\Pokedex.png");
         Image image1 = titleIcon.getImage();
-        Image newImg1 = image1.getScaledInstance(300, 100, Image.SCALE_SMOOTH);
+        Image newImg1 = image1.getScaledInstance(400, 100, Image.SCALE_SMOOTH);
         titleIcon = new ImageIcon(newImg1);
 
         titleLabel = new JLabel(titleIcon);
@@ -81,7 +81,8 @@ public class PokedexFrame extends JFrame {
                         infoPanel.displayPokemonData(new PokeAPIConnection().getPokemonData(searchField.getText()));
                         searchField.setText("");
                     } catch(JSONException ex) {
-                        JOptionPane.showMessageDialog(null, "Invalid Pokemon input");
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, searchField.getText() + " is not a Pokemon");
                     }
                 }
             }
@@ -100,7 +101,7 @@ public class PokedexFrame extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try {
-                    infoPanel.displayPokemonData(new PokeAPIConnection().getPokemonData(searchField.getText()));
+                    infoPanel.displayPokemonData(new PokeAPIConnection().getPokemonData(searchField.getText().toLowerCase()));
                     searchField.setText("");
                 } catch(JSONException ex) {
                     JOptionPane.showMessageDialog(null, "Invalid Pokemon input");

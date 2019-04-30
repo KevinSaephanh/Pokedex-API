@@ -6,16 +6,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class PokemonData {
     private String name;
     private String height;
     private String weight;
-    private String ability;
     private String image;
     private int num;
 
-    private ArrayList<String> type;
-    private ArrayList<String> weakness;
+    private ArrayList<String> abilities;
+    private ArrayList<String> types;
 
     private JSONObject jsonObject;
     private JSONArray jsonArray;
@@ -28,13 +28,12 @@ public class PokemonData {
         setHeight(jsonObject.getString("height"));
         setWeight(jsonObject.getString("weight"));
         setImage(jsonObject.getString("picture"));
-        setAbility(jsonObject.getString("ability"));
 
-        type = new ArrayList<String>();
-        setType();
+        abilities = new ArrayList<String>();
+        setAbilities();
 
-        weakness = new ArrayList<String>();
-        setWeakness();
+        types = new ArrayList<String>();
+        setTypes();
     }
 
     public void setName(String name) {
@@ -45,11 +44,11 @@ public class PokemonData {
         this.num = num;
     }
 
-    public void setType() {
-        jsonArray = jsonObject.getJSONArray("type");
+    public void setTypes() {
+        jsonArray = jsonObject.getJSONObject("types").getJSONArray("values");
 
-        for (int i = 0; i < jsonArray.length(); i++)
-            type.add(jsonArray.optString(i));
+        for(int i = 0; i < jsonArray.length(); i++)
+            types.add(jsonArray.get(i).toString());
     }
 
     public void setHeight(String height) {
@@ -60,15 +59,11 @@ public class PokemonData {
         this.weight = weight;
     }
 
-    public void setAbility(String ability) {
-        this.ability = ability;
-    }
-
-    public void setWeakness() {
-        jsonArray = jsonObject.getJSONArray("weakness");
+    public void setAbilities() {
+        jsonArray = jsonObject.getJSONObject("abilities").getJSONArray("values");
 
         for(int i = 0; i < jsonArray.length(); i++)
-                weakness.add(jsonArray.get(i).toString());
+            abilities.add(jsonArray.get(i).toString());
     }
 
     public void setImage(String image) {
@@ -83,8 +78,8 @@ public class PokemonData {
         return num;
     }
 
-    public String getType() {
-        return StringUtils.join(type, ",");
+    public String getTypes() {
+        return StringUtils.join(types, ",\n");
     }
 
     public String getHeight() {
@@ -95,12 +90,8 @@ public class PokemonData {
         return weight;
     }
 
-    public String getAbility() {
-        return ability;
-    }
-
-    public String getWeakness() {
-        return StringUtils.join(weakness, ",");
+    public String getAbilities() {
+        return StringUtils.join(abilities, ",\n");
     }
 
     public String getImage() {
